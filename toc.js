@@ -1,50 +1,58 @@
 (function () {
-    // Only run on pages with .container (not index)
     var container = document.querySelector('.container');
     if (!container) return;
 
-    // Collect h2 and h3 inside .section (skip QR section)
     var headings = container.querySelectorAll('.section h2, .section h3');
-    if (headings.length < 3) return; // skip pages with too few headings
+    if (headings.length < 3) return;
 
-    // Filter out QR/non-content headings
+    // Filter headings
     var items = [];
     headings.forEach(function (h, i) {
         var text = h.textContent.trim();
-        if (/qu[eé]t m[aã]/i.test(text)) return; // skip QR section heading
+        if (/qu[eé]t m[aã]/i.test(text)) return;
         var id = 'toc-' + i;
         h.setAttribute('id', id);
         items.push({ id: id, text: text, level: h.tagName });
     });
-
     if (items.length < 3) return;
 
-    // Create toggle button
+    var isSidebar = false;
+
+    // === Toggle button (bottom-right) ===
     var btn = document.createElement('button');
     btn.className = 'toc-toggle';
     btn.setAttribute('aria-label', 'Mục lục');
     btn.innerHTML = '&#9776;';
     document.body.appendChild(btn);
 
-    // Create panel
+    // === Panel ===
     var panel = document.createElement('div');
     panel.className = 'toc-panel';
 
+    // Header
     var header = document.createElement('div');
     header.className = 'toc-header';
-    header.innerHTML = '<span>Mục lục</span><button class="toc-close" aria-label="Đóng">&times;</button>';
+    header.innerHTML =
+        '<span>Mục lục</span>' +
+        '<div class="toc-header-actions">' +
+            '<button class="toc-expand" aria-label="Phóng to" title="Phóng to thành sidebar">&#x26F6;</button>' +
+            '<button class="toc-close" aria-label="Đóng">&times;</button>' +
+        '</div>';
     panel.appendChild(header);
 
-    var body = document.createElement('div');
-    body.className = 'toc-body';
+    var expandBtn = header.querySelector('.toc-expand');
+    var closeBtn = header.querySelector('.toc-close');
+
+    // Body
+    var tocBody = document.createElement('div');
+    tocBody.className = 'toc-body';
 
     items.forEach(function (item) {
         var a = document.createElement('a');
         a.href = '#' + item.id;
         a.textContent = item.text;
-        if (item.level === 'H3') {
-            a.className = 'toc-h3';
-        }
+        if (item.level === 'H3') a.className = 'toc-h3';
+
         a.addEventListener('click', function (e) {
             e.preventDefault();
             var target = document.getElementById(item.id);
@@ -54,32 +62,102 @@
                 var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
                 window.scrollTo({ top: top, behavior: 'smooth' });
             }
-            // Close panel on mobile
-            if (window.innerWidth < 600) {
-                panel.classList.remove('open');
-                btn.classList.remove('active');
+            // Close popup on mobile (not sidebar mode)
+            if (!isSidebar && window.innerWidth < 768) {
+                closePanel();
             }
         });
-        body.appendChild(a);
+        tocBody.appendChild(a);
     });
 
-    panel.appendChild(body);
+    panel.appendChild(tocBody);
     document.body.appendChild(panel);
 
-    // Toggle
-    btn.addEventListener('click', function () {
-        var isOpen = panel.classList.toggle('open');
-        btn.classList.toggle('active', isOpen);
+    // === Sidebar overlay (mobile) ===
+    var overlay = document.createElement('div');
+    overlay.className = 'toc-overlay';
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', function () {
+        if (isSidebar && window.innerWidth < 768) {
+            collapseSidebar();
+        }
     });
 
-    // Close button
-    header.querySelector('.toc-close').addEventListener('click', function () {
+    // === Open / Close popup ===
+    function openPanel() {
+        panel.classList.add('open');
+        btn.classList.add('active');
+    }
+
+    function closePanel() {
         panel.classList.remove('open');
         btn.classList.remove('active');
+    }
+
+    btn.addEventListener('click', function () {
+        if (isSidebar) {
+            // In sidebar mode on mobile, toggle visibility
+            if (window.innerWidth < 768) {
+                document.body.classList.toggle('toc-sidebar-mobile-open');
+                overlay.classList.toggle('visible');
+            }
+            return;
+        }
+        if (panel.classList.contains('open')) {
+            closePanel();
+        } else {
+            openPanel();
+        }
     });
 
-    // Highlight active heading on scroll
-    var links = body.querySelectorAll('a');
+    closeBtn.addEventListener('click', function () {
+        if (isSidebar) {
+            collapseSidebar();
+        } else {
+            closePanel();
+        }
+    });
+
+    // === Expand to sidebar ===
+    function expandSidebar() {
+        isSidebar = true;
+        closePanel(); // close popup mode
+        document.body.classList.add('toc-sidebar-active');
+        panel.classList.add('toc-sidebar');
+        panel.classList.remove('open');
+        btn.innerHTML = '&#9776;';
+        btn.classList.remove('active');
+        expandBtn.innerHTML = '&#x2716;'; // X icon
+        expandBtn.title = 'Thu nhỏ sidebar';
+
+        // On mobile, show sidebar overlay
+        if (window.innerWidth < 768) {
+            document.body.classList.add('toc-sidebar-mobile-open');
+            overlay.classList.add('visible');
+        }
+    }
+
+    function collapseSidebar() {
+        isSidebar = false;
+        document.body.classList.remove('toc-sidebar-active');
+        document.body.classList.remove('toc-sidebar-mobile-open');
+        panel.classList.remove('toc-sidebar');
+        overlay.classList.remove('visible');
+        expandBtn.innerHTML = '&#x26F6;';
+        expandBtn.title = 'Phóng to thành sidebar';
+    }
+
+    expandBtn.addEventListener('click', function () {
+        if (isSidebar) {
+            collapseSidebar();
+        } else {
+            expandSidebar();
+        }
+    });
+
+    // === Highlight on scroll ===
+    var links = tocBody.querySelectorAll('a');
     var ticking = false;
 
     function updateActive() {
@@ -91,9 +169,7 @@
             var el = document.getElementById(item.id);
             if (el) {
                 var rect = el.getBoundingClientRect();
-                if (rect.top <= offset + 5) {
-                    current = i;
-                }
+                if (rect.top <= offset + 5) current = i;
             }
         });
 
@@ -101,16 +177,14 @@
             a.classList.toggle('toc-active', i === current);
         });
 
-        // Auto-scroll TOC to active item
         if (current !== null && links[current]) {
             var activeLink = links[current];
-            var bodyRect = body.getBoundingClientRect();
-            var linkRect = activeLink.getBoundingClientRect();
-            if (linkRect.top < bodyRect.top || linkRect.bottom > bodyRect.bottom) {
+            var bRect = tocBody.getBoundingClientRect();
+            var lRect = activeLink.getBoundingClientRect();
+            if (lRect.top < bRect.top || lRect.bottom > bRect.bottom) {
                 activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
             }
         }
-
         ticking = false;
     }
 
@@ -121,6 +195,15 @@
         }
     }, { passive: true });
 
-    // Initial highlight
     updateActive();
+
+    // === Handle resize: if in sidebar mode and screen changes ===
+    window.addEventListener('resize', function () {
+        if (isSidebar) {
+            if (window.innerWidth >= 768) {
+                document.body.classList.remove('toc-sidebar-mobile-open');
+                overlay.classList.remove('visible');
+            }
+        }
+    });
 })();
