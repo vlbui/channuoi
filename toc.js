@@ -5,7 +5,6 @@
     var headings = container.querySelectorAll('.section h2, .section h3');
     if (headings.length < 3) return;
 
-    // Filter headings
     var items = [];
     headings.forEach(function (h, i) {
         var text = h.textContent.trim();
@@ -29,14 +28,18 @@
     var panel = document.createElement('div');
     panel.className = 'toc-panel';
 
-    // Header
+    // Header — popup mode: has expand + close; sidebar mode: only close
     var header = document.createElement('div');
     header.className = 'toc-header';
     header.innerHTML =
         '<span>Mục lục</span>' +
-        '<button class="toc-close" aria-label="Đóng">&times;</button>';
+        '<div class="toc-header-actions">' +
+            '<button class="toc-expand" aria-label="Mở rộng" title="Mở rộng thành sidebar">&#x26F6;</button>' +
+            '<button class="toc-close" aria-label="Đóng">&times;</button>' +
+        '</div>';
     panel.appendChild(header);
 
+    var expandBtn = header.querySelector('.toc-expand');
     var closeBtn = header.querySelector('.toc-close');
 
     // Body
@@ -58,7 +61,6 @@
                 var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
                 window.scrollTo({ top: top, behavior: 'smooth' });
             }
-            // Close popup on mobile (not sidebar mode)
             if (!isSidebar && window.innerWidth < 768) {
                 closePanel();
             }
@@ -69,18 +71,17 @@
     panel.appendChild(tocBody);
     document.body.appendChild(panel);
 
-    // === Sidebar overlay (mobile) ===
+    // === Overlay (mobile sidebar) ===
     var overlay = document.createElement('div');
     overlay.className = 'toc-overlay';
     document.body.appendChild(overlay);
-
     overlay.addEventListener('click', function () {
         if (isSidebar && window.innerWidth < 768) {
             collapseSidebar();
         }
     });
 
-    // === Open / Close popup ===
+    // === Popup open/close ===
     function openPanel() {
         panel.classList.add('open');
         btn.classList.add('active');
@@ -91,9 +92,9 @@
         btn.classList.remove('active');
     }
 
+    // Toggle button: open/close popup (not sidebar)
     btn.addEventListener('click', function () {
         if (isSidebar) {
-            // Toggle sidebar visibility on mobile
             if (window.innerWidth < 768) {
                 document.body.classList.toggle('toc-sidebar-mobile-open');
                 overlay.classList.toggle('visible');
@@ -102,15 +103,14 @@
             }
             return;
         }
-        // Popup open → expand to sidebar; Closed → open popup
         if (panel.classList.contains('open')) {
             closePanel();
-            expandSidebar();
         } else {
             openPanel();
         }
     });
 
+    // Close button: close popup or close sidebar
     closeBtn.addEventListener('click', function () {
         if (isSidebar) {
             collapseSidebar();
@@ -119,13 +119,19 @@
         }
     });
 
-    // === Sidebar mode ===
+    // Expand button: popup → sidebar
+    expandBtn.addEventListener('click', function () {
+        closePanel();
+        expandSidebar();
+    });
+
+    // === Sidebar ===
     function expandSidebar() {
         isSidebar = true;
-        closePanel();
         document.body.classList.add('toc-sidebar-active');
         panel.classList.add('toc-sidebar');
-        btn.classList.add('active');
+        // Hide expand button in sidebar mode, show only close
+        expandBtn.style.display = 'none';
 
         if (window.innerWidth < 768) {
             document.body.classList.add('toc-sidebar-mobile-open');
@@ -140,6 +146,8 @@
         panel.classList.remove('toc-sidebar');
         overlay.classList.remove('visible');
         btn.classList.remove('active');
+        // Restore expand button for popup mode
+        expandBtn.style.display = '';
     }
 
     // === Highlight on scroll ===
@@ -183,13 +191,10 @@
 
     updateActive();
 
-    // === Handle resize: if in sidebar mode and screen changes ===
     window.addEventListener('resize', function () {
-        if (isSidebar) {
-            if (window.innerWidth >= 768) {
-                document.body.classList.remove('toc-sidebar-mobile-open');
-                overlay.classList.remove('visible');
-            }
+        if (isSidebar && window.innerWidth >= 768) {
+            document.body.classList.remove('toc-sidebar-mobile-open');
+            overlay.classList.remove('visible');
         }
     });
 })();

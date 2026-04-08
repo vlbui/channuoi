@@ -463,11 +463,17 @@ img {
     flex-shrink: 0;
 }
 
-.toc-header .toc-close {
+.toc-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.toc-header .toc-close,
+.toc-header .toc-expand {
     background: none;
     border: none;
     color: white;
-    font-size: 1.3rem;
     cursor: pointer;
     padding: 4px 6px;
     opacity: 0.8;
@@ -476,7 +482,16 @@ img {
     transition: opacity 0.2s, background 0.2s;
 }
 
-.toc-header .toc-close:active {
+.toc-header .toc-close {
+    font-size: 1.3rem;
+}
+
+.toc-header .toc-expand {
+    font-size: 1.1rem;
+}
+
+.toc-header .toc-close:active,
+.toc-header .toc-expand:active {
     background: rgba(255,255,255,0.15);
 }
 
@@ -1000,7 +1015,8 @@ img {
         display: none;
     }
 
-    .toc-header .toc-close:hover {
+    .toc-header .toc-close:hover,
+    .toc-header .toc-expand:hover {
         opacity: 1;
         background: rgba(255,255,255,0.15);
     }
