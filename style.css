@@ -1,7 +1,20 @@
-* {
+/* ===========================================
+   MOBILE-FIRST CSS — Cẩm Nang Chăn Nuôi
+   Base: < 480px (phones)
+   Breakpoints: 480px, 768px, 1024px
+   =========================================== */
+
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 52px;
 }
 
 body {
@@ -9,8 +22,15 @@ body {
     background: #f0f4f0;
     color: #333;
     line-height: 1.7;
-    font-size: 15px;
+    font-size: 14px;
     -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 /* ===== HEADER ===== */
@@ -18,120 +38,159 @@ body {
     background: linear-gradient(135deg, #2d6a4f, #40916c);
     color: white;
     text-align: center;
-    padding: 28px 16px 24px;
+    padding: 20px 16px 16px;
     border-bottom: 3px solid #1b4332;
 }
 
 .header h1 {
-    font-size: 1.5rem;
-    margin-bottom: 6px;
+    font-size: 1.25rem;
+    margin-bottom: 4px;
     line-height: 1.3;
+    letter-spacing: -0.01em;
 }
 
 .header p {
-    font-size: 0.92rem;
-    opacity: 0.9;
+    font-size: 0.82rem;
+    opacity: 0.88;
     max-width: 600px;
     margin: 0 auto;
+    line-height: 1.5;
 }
 
 /* ===== NAV ===== */
 .nav {
     background: #1b4332;
-    padding: 8px 10px;
+    padding: 6px 8px;
     display: flex;
     justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 4px;
+    flex-wrap: nowrap;
+    gap: 3px;
     position: sticky;
     top: 0;
     z-index: 100;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.nav::-webkit-scrollbar {
+    display: none;
 }
 
 .nav a {
-    color: white;
+    color: rgba(255,255,255,0.85);
     text-decoration: none;
     padding: 6px 10px;
-    border-radius: 16px;
-    font-size: 0.8rem;
-    transition: background 0.3s;
+    border-radius: 20px;
+    font-size: 0.73rem;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
     white-space: nowrap;
     flex-shrink: 0;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
 }
 
 .nav a:hover,
+.nav a:active {
+    background: rgba(255,255,255,0.12);
+    color: white;
+}
+
 .nav a.active {
     background: #40916c;
+    color: white;
+    font-weight: 600;
 }
 
 /* ===== CONTAINER ===== */
 .container {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 16px 12px;
+    padding: 12px 10px;
 }
 
 /* ===== SECTION ===== */
 .section {
     background: white;
-    border-radius: 10px;
-    padding: 18px 14px;
-    margin-bottom: 16px;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    padding: 16px 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
 }
 
 .section h2 {
     color: #2d6a4f;
-    font-size: 1.2rem;
-    margin-bottom: 6px;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
     padding-bottom: 8px;
-    border-bottom: 3px solid #b7e4c7;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    border-bottom: 2px solid #b7e4c7;
+    line-height: 1.4;
+    word-break: break-word;
 }
 
 .section h2 .icon {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
 }
 
 .section h3 {
     color: #40916c;
-    margin: 14px 0 6px;
-    font-size: 1.02rem;
+    margin: 16px 0 6px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.section h4 {
+    color: #1b4332;
+    margin: 12px 0 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
 .section p,
 .section li {
     color: #444;
-    margin-bottom: 5px;
-    font-size: 0.93rem;
+    margin-bottom: 6px;
+    font-size: 0.88rem;
+    line-height: 1.65;
 }
 
 .section ul,
 .section ol {
-    padding-left: 20px;
+    padding-left: 18px;
     margin-bottom: 10px;
+}
+
+.section li {
+    padding-left: 2px;
+}
+
+.section strong {
+    color: #1b4332;
+}
+
+.section em {
+    color: #555;
 }
 
 /* ===== CARD GRID ===== */
 .card-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 14px;
-    margin-top: 14px;
+    gap: 12px;
+    margin-top: 12px;
 }
 
 .card {
     background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
     overflow: hidden;
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
     flex-direction: column;
+    border: 1px solid rgba(0,0,0,0.04);
 }
 
 .card:active {
@@ -139,7 +198,7 @@ body {
 }
 
 .card-body {
-    padding: 16px;
+    padding: 14px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -149,24 +208,27 @@ body {
     display: inline-block;
     background: #2d6a4f;
     color: white;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-weight: 700;
     padding: 2px 10px;
     border-radius: 10px;
     margin-bottom: 6px;
     width: fit-content;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
 }
 
 .card-title {
-    font-size: 1.1rem;
+    font-size: 1.02rem;
     font-weight: 700;
     color: #1b4332;
     margin-bottom: 4px;
+    line-height: 1.3;
 }
 
 .card-desc {
     color: #555;
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     flex-grow: 1;
     margin-bottom: 10px;
     line-height: 1.5;
@@ -176,31 +238,33 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    padding: 0 16px 16px;
+    gap: 10px;
+    padding: 0 14px 14px;
 }
 
 .card-qr {
-    width: 72px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
     border-radius: 6px;
     border: 1px solid #e0e0e0;
     flex-shrink: 0;
 }
 
 .card-link {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: #2d6a4f;
     color: white;
     text-decoration: none;
-    padding: 10px 18px;
+    padding: 10px 16px;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     transition: background 0.2s;
-    text-align: center;
     min-height: 44px;
-    line-height: 24px;
+    flex-grow: 1;
+    text-align: center;
 }
 
 .card-link:hover,
@@ -212,11 +276,13 @@ body {
 .info-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 12px 0;
-    font-size: 0.85rem;
+    margin: 10px 0;
+    font-size: 0.78rem;
     display: block;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
 }
 
 .info-table thead,
@@ -229,9 +295,9 @@ body {
 
 .info-table th,
 .info-table td {
-    padding: 8px 10px;
+    padding: 7px 8px;
     text-align: left;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e8e8e8;
     white-space: nowrap;
 }
 
@@ -239,8 +305,14 @@ body {
     background: #2d6a4f;
     color: white;
     font-weight: 600;
+    font-size: 0.76rem;
     position: sticky;
     top: 0;
+    z-index: 1;
+}
+
+.info-table td {
+    font-size: 0.78rem;
 }
 
 .info-table tr:nth-child(even) {
@@ -251,40 +323,45 @@ body {
     background: #d8f3dc;
 }
 
+.info-table tr:last-child td {
+    border-bottom: none;
+}
+
 /* ===== TIMELINE ===== */
 .timeline {
     position: relative;
-    padding-left: 24px;
-    margin: 16px 0;
+    padding-left: 22px;
+    margin: 14px 0;
 }
 
 .timeline::before {
     content: '';
     position: absolute;
-    left: 6px;
+    left: 5px;
     top: 0;
     bottom: 0;
     width: 3px;
     background: #b7e4c7;
+    border-radius: 2px;
 }
 
 .timeline-item {
     position: relative;
-    margin-bottom: 14px;
-    padding: 12px 14px;
+    margin-bottom: 12px;
+    padding: 10px 12px;
     background: #f8fdf8;
     border-radius: 8px;
     border-left: 3px solid #40916c;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 .timeline-item::before {
     content: '';
     position: absolute;
-    left: -22px;
-    top: 16px;
-    width: 10px;
-    height: 10px;
+    left: -20px;
+    top: 14px;
+    width: 9px;
+    height: 9px;
     background: #40916c;
     border-radius: 50%;
     border: 2px solid white;
@@ -298,46 +375,51 @@ body {
 .alert {
     background: #fff3cd;
     border-left: 4px solid #ffc107;
-    padding: 12px 14px;
-    border-radius: 6px;
-    margin: 12px 0;
-    font-size: 0.9rem;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-size: 0.85rem;
+    line-height: 1.55;
+}
+
+.alert strong {
+    display: inline;
 }
 
 .alert.alert-danger {
-    background: #f8d7da;
+    background: #fdf0f0;
     border-left-color: #dc3545;
 }
 
 .alert.alert-info {
-    background: #d1ecf1;
+    background: #edf7fa;
     border-left-color: #17a2b8;
 }
 
 /* ===== FLOATING TOC ===== */
 .toc-toggle {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 16px;
+    right: 16px;
     z-index: 200;
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     background: #2d6a4f;
     color: white;
     border: none;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     cursor: pointer;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    box-shadow: 0 3px 14px rgba(0,0,0,0.28);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background 0.2s, transform 0.2s;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.toc-toggle:hover {
-    background: #1b4332;
-    transform: scale(1.08);
+.toc-toggle:active {
+    transform: scale(0.92);
 }
 
 .toc-toggle.active {
@@ -346,18 +428,18 @@ body {
 
 .toc-panel {
     position: fixed;
-    bottom: 78px;
-    right: 20px;
+    bottom: 72px;
+    right: 12px;
+    left: 12px;
     z-index: 199;
-    width: 300px;
-    max-height: 60vh;
+    max-height: 55vh;
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 6px 30px rgba(0,0,0,0.18);
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.22);
     overflow: hidden;
     display: none;
     flex-direction: column;
-    animation: tocSlideUp 0.25s ease-out;
+    animation: tocSlideUp 0.2s ease-out;
 }
 
 .toc-panel.open {
@@ -365,7 +447,7 @@ body {
 }
 
 @keyframes tocSlideUp {
-    from { opacity: 0; transform: translateY(12px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
@@ -374,7 +456,7 @@ body {
     color: white;
     padding: 12px 16px;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -385,37 +467,33 @@ body {
     background: none;
     border: none;
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     cursor: pointer;
-    padding: 0 2px;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-}
-
-.toc-header .toc-close:hover {
-    opacity: 1;
+    padding: 4px 6px;
+    opacity: 0.8;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .toc-body {
     overflow-y: auto;
-    padding: 8px 0;
+    padding: 6px 0;
     -webkit-overflow-scrolling: touch;
 }
 
 .toc-body a {
     display: block;
-    padding: 7px 16px;
+    padding: 8px 14px;
     color: #333;
     text-decoration: none;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     line-height: 1.4;
     border-left: 3px solid transparent;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    transition: background 0.15s, border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.toc-body a:hover {
-    background: #f0f4f0;
-    color: #2d6a4f;
+.toc-body a:active {
+    background: #e8f5e9;
 }
 
 .toc-body a.toc-active {
@@ -426,22 +504,13 @@ body {
 }
 
 .toc-body a.toc-h3 {
-    padding-left: 30px;
-    font-size: 0.78rem;
+    padding-left: 28px;
+    font-size: 0.76rem;
     color: #666;
 }
 
-.toc-body a.toc-h3:hover,
 .toc-body a.toc-h3.toc-active {
     color: #40916c;
-}
-
-/* Hide TOC on very small screens in landscape if too tight */
-@media (max-width: 360px) {
-    .toc-panel {
-        width: calc(100vw - 40px);
-        right: 20px;
-    }
 }
 
 /* ===== BACK LINK ===== */
@@ -452,13 +521,14 @@ body {
     color: #2d6a4f;
     text-decoration: none;
     font-weight: 600;
-    margin-bottom: 14px;
-    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
     min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.back-link:hover {
-    text-decoration: underline;
+.back-link:active {
+    opacity: 0.7;
 }
 
 /* ===== FOOTER ===== */
@@ -466,9 +536,9 @@ body {
     background: #1b4332;
     color: white;
     text-align: center;
-    padding: 20px 16px;
-    margin-top: 16px;
-    font-size: 0.9rem;
+    padding: 20px 16px 28px;
+    margin-top: 12px;
+    font-size: 0.85rem;
 }
 
 .footer a {
@@ -476,51 +546,279 @@ body {
     min-height: 44px;
     display: inline-flex;
     align-items: center;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* =========================================
-   TABLET (min-width: 600px)
-   ========================================= */
-@media (min-width: 600px) {
+.footer p {
+    line-height: 1.5;
+}
+
+/* ===== SCROLL TO TOP (added via JS toc-toggle double purpose) ===== */
+
+/* ===========================================
+   SMALL PHONES (min-width: 380px)
+   =========================================== */
+@media (min-width: 380px) {
+    .header h1 {
+        font-size: 1.35rem;
+    }
+
+    .nav a {
+        font-size: 0.76rem;
+        padding: 6px 11px;
+    }
+
+    .section {
+        padding: 16px 16px;
+    }
+
+    .section h2 {
+        font-size: 1.15rem;
+    }
+
+    .card-qr {
+        width: 72px;
+        height: 72px;
+    }
+}
+
+/* ===========================================
+   LARGE PHONES (min-width: 480px)
+   =========================================== */
+@media (min-width: 480px) {
+    body {
+        font-size: 14.5px;
+    }
+
     .header {
-        padding: 36px 20px 30px;
+        padding: 24px 16px 20px;
     }
 
     .header h1 {
-        font-size: 1.9rem;
+        font-size: 1.5rem;
     }
 
     .header p {
+        font-size: 0.88rem;
+    }
+
+    .container {
+        padding: 16px 14px;
+    }
+
+    .section {
+        padding: 18px 18px;
+        margin-bottom: 14px;
+    }
+
+    .section h2 {
+        font-size: 1.2rem;
+    }
+
+    .section h3 {
         font-size: 1rem;
+    }
+
+    .section p,
+    .section li {
+        font-size: 0.9rem;
+    }
+
+    .info-table th,
+    .info-table td {
+        padding: 8px 10px;
+    }
+
+    .info-table th {
+        font-size: 0.8rem;
+    }
+
+    .info-table td {
+        font-size: 0.82rem;
+    }
+
+    .card-body {
+        padding: 16px;
+    }
+
+    .card-title {
+        font-size: 1.08rem;
+    }
+
+    .card-desc {
+        font-size: 0.85rem;
+    }
+
+    .toc-panel {
+        left: auto;
+        right: 16px;
+        width: 320px;
+    }
+}
+
+/* ===========================================
+   TABLET (min-width: 768px)
+   =========================================== */
+@media (min-width: 768px) {
+    body {
+        font-size: 15px;
+    }
+
+    .header {
+        padding: 32px 20px 26px;
+    }
+
+    .header h1 {
+        font-size: 1.85rem;
+    }
+
+    .header p {
+        font-size: 0.95rem;
     }
 
     .nav {
         justify-content: center;
-        padding: 10px 16px;
-        gap: 6px;
+        padding: 8px 16px;
+        gap: 4px;
+        flex-wrap: wrap;
     }
 
     .nav a {
-        font-size: 0.88rem;
+        font-size: 0.85rem;
         padding: 7px 14px;
     }
 
     .container {
-        padding: 24px 20px;
+        padding: 22px 20px;
     }
 
     .section {
-        padding: 24px 22px;
-        margin-bottom: 22px;
-        border-radius: 12px;
+        padding: 24px 24px;
+        margin-bottom: 18px;
     }
 
     .section h2 {
         font-size: 1.35rem;
+        border-bottom-width: 3px;
     }
 
     .section h3 {
-        font-size: 1.1rem;
+        font-size: 1.08rem;
+    }
+
+    .section p,
+    .section li {
+        font-size: 0.93rem;
+    }
+
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .card-body {
+        padding: 18px;
+    }
+
+    .card-footer {
+        padding: 0 18px 16px;
+    }
+
+    .card-qr {
+        width: 80px;
+        height: 80px;
+    }
+
+    .card-link {
+        flex-grow: 0;
+        padding: 10px 20px;
+    }
+
+    .info-table {
+        font-size: 0.85rem;
+        border-radius: 10px;
+    }
+
+    .info-table th,
+    .info-table td {
+        padding: 9px 12px;
+    }
+
+    .toc-panel {
+        width: 320px;
+        max-height: 60vh;
+        bottom: 76px;
+    }
+
+    .toc-toggle {
+        width: 48px;
+        height: 48px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 1.3rem;
+    }
+
+    .toc-toggle:hover {
+        background: #1b4332;
+        transform: scale(1.06);
+    }
+
+    .toc-body a:hover {
+        background: #f0f4f0;
+        color: #2d6a4f;
+    }
+
+    .toc-header .toc-close:hover {
+        opacity: 1;
+    }
+}
+
+/* ===========================================
+   DESKTOP (min-width: 1024px)
+   =========================================== */
+@media (min-width: 1024px) {
+    body {
+        font-size: 16px;
+    }
+
+    .header {
+        padding: 40px 24px 34px;
+    }
+
+    .header h1 {
+        font-size: 2.2rem;
+    }
+
+    .header p {
+        font-size: 1.05rem;
+    }
+
+    .nav {
+        padding: 10px 20px;
+        gap: 6px;
+    }
+
+    .nav a {
+        font-size: 0.9rem;
+        padding: 7px 16px;
+    }
+
+    .container {
+        padding: 28px 24px;
+    }
+
+    .section {
+        padding: 28px 30px;
+        margin-bottom: 22px;
+    }
+
+    .section h2 {
+        font-size: 1.5rem;
+    }
+
+    .section h3 {
+        font-size: 1.12rem;
+        margin: 18px 0 8px;
     }
 
     .section p,
@@ -529,8 +827,17 @@ body {
     }
 
     .card-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 18px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 28px rgba(45, 106, 79, 0.18);
     }
 
     .card-body {
@@ -546,8 +853,8 @@ body {
     }
 
     .card-qr {
-        width: 88px;
-        height: 88px;
+        width: 96px;
+        height: 96px;
     }
 
     .card-footer {
@@ -555,97 +862,7 @@ body {
     }
 
     .info-table {
-        font-size: 0.9rem;
-    }
-
-    .info-table th,
-    .info-table td {
-        padding: 10px 12px;
-    }
-}
-
-/* =========================================
-   DESKTOP (min-width: 960px)
-   ========================================= */
-@media (min-width: 960px) {
-    body {
-        font-size: 16px;
-    }
-
-    .header {
-        padding: 44px 20px 36px;
-    }
-
-    .header h1 {
-        font-size: 2.4rem;
-    }
-
-    .header p {
-        font-size: 1.1rem;
-    }
-
-    .nav {
-        padding: 10px 20px;
-        gap: 6px;
-    }
-
-    .nav a {
         font-size: 0.92rem;
-        padding: 7px 16px;
-        border-radius: 20px;
-    }
-
-    .container {
-        padding: 30px 20px;
-    }
-
-    .section {
-        padding: 30px;
-        margin-bottom: 28px;
-    }
-
-    .section h2 {
-        font-size: 1.55rem;
-    }
-
-    .section h3 {
-        font-size: 1.12rem;
-        margin: 18px 0 8px;
-    }
-
-    .card-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 22px;
-    }
-
-    .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 28px rgba(45, 106, 79, 0.18);
-    }
-
-    .card-body {
-        padding: 22px;
-    }
-
-    .card-title {
-        font-size: 1.2rem;
-    }
-
-    .card-desc {
-        font-size: 0.93rem;
-    }
-
-    .card-qr {
-        width: 100px;
-        height: 100px;
-    }
-
-    .card-footer {
-        padding: 0 22px 20px;
-    }
-
-    .info-table {
-        font-size: 0.95rem;
     }
 
     .info-table th,
@@ -654,8 +871,12 @@ body {
         white-space: normal;
     }
 
+    .info-table th {
+        font-size: 0.88rem;
+    }
+
     .timeline {
-        padding-left: 30px;
+        padding-left: 28px;
     }
 
     .timeline-item {
@@ -663,8 +884,33 @@ body {
     }
 
     .timeline-item::before {
-        left: -27px;
-        width: 12px;
-        height: 12px;
+        left: -25px;
+        width: 11px;
+        height: 11px;
+    }
+
+    .toc-panel {
+        width: 340px;
+    }
+}
+
+/* ===========================================
+   WIDE DESKTOP (min-width: 1280px)
+   =========================================== */
+@media (min-width: 1280px) {
+    .header h1 {
+        font-size: 2.5rem;
+    }
+
+    .section {
+        padding: 32px 36px;
+    }
+
+    .section h2 {
+        font-size: 1.6rem;
+    }
+
+    .card-grid {
+        gap: 24px;
     }
 }
