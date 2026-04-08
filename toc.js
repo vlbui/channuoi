@@ -34,13 +34,9 @@
     header.className = 'toc-header';
     header.innerHTML =
         '<span>Mục lục</span>' +
-        '<div class="toc-header-actions">' +
-            '<button class="toc-expand" aria-label="Phóng to" title="Phóng to thành sidebar">&#x26F6;</button>' +
-            '<button class="toc-close" aria-label="Đóng">&times;</button>' +
-        '</div>';
+        '<button class="toc-close" aria-label="Đóng">&times;</button>';
     panel.appendChild(header);
 
-    var expandBtn = header.querySelector('.toc-expand');
     var closeBtn = header.querySelector('.toc-close');
 
     // Body
@@ -97,15 +93,19 @@
 
     btn.addEventListener('click', function () {
         if (isSidebar) {
-            // In sidebar mode on mobile, toggle visibility
+            // Toggle sidebar visibility on mobile
             if (window.innerWidth < 768) {
                 document.body.classList.toggle('toc-sidebar-mobile-open');
                 overlay.classList.toggle('visible');
+            } else {
+                collapseSidebar();
             }
             return;
         }
+        // Popup open → expand to sidebar; Closed → open popup
         if (panel.classList.contains('open')) {
             closePanel();
+            expandSidebar();
         } else {
             openPanel();
         }
@@ -119,19 +119,14 @@
         }
     });
 
-    // === Expand to sidebar ===
+    // === Sidebar mode ===
     function expandSidebar() {
         isSidebar = true;
-        closePanel(); // close popup mode
+        closePanel();
         document.body.classList.add('toc-sidebar-active');
         panel.classList.add('toc-sidebar');
-        panel.classList.remove('open');
-        btn.innerHTML = '&#9776;';
-        btn.classList.remove('active');
-        expandBtn.innerHTML = '&#x2716;'; // X icon
-        expandBtn.title = 'Thu nhỏ sidebar';
+        btn.classList.add('active');
 
-        // On mobile, show sidebar overlay
         if (window.innerWidth < 768) {
             document.body.classList.add('toc-sidebar-mobile-open');
             overlay.classList.add('visible');
@@ -144,17 +139,8 @@
         document.body.classList.remove('toc-sidebar-mobile-open');
         panel.classList.remove('toc-sidebar');
         overlay.classList.remove('visible');
-        expandBtn.innerHTML = '&#x26F6;';
-        expandBtn.title = 'Phóng to thành sidebar';
+        btn.classList.remove('active');
     }
-
-    expandBtn.addEventListener('click', function () {
-        if (isSidebar) {
-            collapseSidebar();
-        } else {
-            expandSidebar();
-        }
-    });
 
     // === Highlight on scroll ===
     var links = tocBody.querySelectorAll('a');
